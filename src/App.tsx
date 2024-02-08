@@ -11,6 +11,7 @@ export async function loader({ request }: { request: Request }) {
     params.set("from", new URL(request.url).pathname);
     return redirect("/login?" + params.toString());
   }
+  return null;
 }
 // Obtener los boards
 

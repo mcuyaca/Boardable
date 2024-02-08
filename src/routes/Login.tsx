@@ -1,5 +1,6 @@
 import {
   Form,
+  Link,
   redirect,
   useActionData,
   useLocation,
@@ -13,9 +14,9 @@ import { authProvider } from "../auth";
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
+  console.log({ formData });
   const username = formData.get("username")?.toString();
   const password = formData.get("password")?.toString();
-  console.log({ username, password });
   try {
     await authProvider.login(username!, password!);
   } catch (error) {
@@ -25,7 +26,7 @@ export async function action({ request }: { request: Request }) {
     };
   }
 
-  const redirectTo = formData.get("reditectTo")?.toString();
+  const redirectTo = formData.get("redirectTo")?.toString();
   return redirect(redirectTo || "/");
 }
 
@@ -39,7 +40,6 @@ function Login() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const redirectTo = searchParams.get("from");
-
   const isSubmitting = navigation.state === "submitting";
 
   return (
@@ -60,12 +60,15 @@ function Login() {
         ></Button>
 
         {actionData?.error && (
-          <p className="text-red-500">{actionData.error}</p>
+          <p className="text-center text-red-500">{actionData.error}</p>
         )}
       </Form>
-      <a className="flex items-center gap-1 text-sm text-primary" href="">
+      <Link
+        className="flex items-center gap-1 text-sm text-primary"
+        to="/signup"
+      >
         Create an account <img className="h-4 w-4" src={arrowRight} alt="" />
-      </a>
+      </Link>
     </section>
   );
 }

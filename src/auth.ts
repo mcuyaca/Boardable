@@ -27,6 +27,26 @@ export const authProvider = {
       throw new Error(error);
     }
   },
+
+  async signup(username: string, password: string) {
+    const url = URL_BASE + "/signup";
+    const options = {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, options);
+
+    if (response.ok) {
+      this.login(username, password);
+    } else {
+      const error = await response.json();
+      throw new Error(error);
+    }
+  },
   logout() {
     window.localStorage.removeItem(tokenKey);
     authProvider.isAuthenticated = false;

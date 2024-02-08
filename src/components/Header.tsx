@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Button } from "./Button";
 import logoSvg from "../assets/images/Logo.svg";
+import { Form, Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -10,8 +11,16 @@ function Header() {
         <h1>Boardable</h1>
       </div>
       <div className="flex gap-4">
-        <Button variant="outline" className="" buttonText="My Account"></Button>
-        <Button variant="secondary" className="" buttonText="Logout"></Button>
+        <Link to="/account">
+          <Button
+            variant="outline"
+            className=""
+            buttonText="My Account"
+          ></Button>
+        </Link>
+        <Form method="POST" action="/logout">
+          <Button variant="secondary" className="" buttonText="Logout"></Button>
+        </Form>
       </div>
     </div>
   );
