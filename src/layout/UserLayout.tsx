@@ -7,8 +7,8 @@ interface Props {
 
 function UserLayout({ children }: Props) {
   return (
-    <div className=" h-full min-h-screen ">
-      <div className=" h-full w-screen max-w-[1440px] ">
+    <div className=" flex h-screen flex-col ">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-grow flex-col">
         <Header />
         {children}
       </div>
