@@ -2,54 +2,98 @@ import * as React from "react";
 import ColorPicker from "./ColorPicker";
 import { Input } from "./Input";
 import { Button } from "./Button";
+import {
+  Form,
+  Link,
+  useNavigation,
+  useOutletContext,
+  useRouteLoaderData,
+} from "react-router-dom";
 
-const arrList = [
-  { title: "My board title 1", color: "#E1E7EF" },
-  { title: "My board title 2", color: "#fec8c8" },
-  { title: "My board title 3", color: "#FED6A9" },
-  { title: "My board title 4", color: "#FEF08B" },
-  { title: "My board title 5", color: "#D9F99F" },
-];
+type Boards = {
+  id: number;
+  color: string;
+  createdat: string;
+  updatedat: string;
+  title: string;
+  userid: number;
+};
+
+const initialValues = {
+  title: "",
+  color: "#E1E7EF",
+};
 
 function BoardList() {
+  const [formData, setFormData] = React.useState(initialValues);
+  const navigation = useNavigation();
+  const error = useOutletContext();
+  const isSubmitting = Boolean(navigation.formMethod);
+
+  async function handleChange(event) {
+    const { name, value } = event.target;
+
+    setFormData({ ...formData, [name]: value });
+    await console.log(formData);
+  }
+
+  React.useEffect(() => {
+    if (navigation.state === "idle" && !error) {
+      setFormData(initialValues);
+    }
+  }, [navigation.state, error]);
+
+  const routeData = useRouteLoaderData("app");
+  const { boards }: { boards: Boards[] } = routeData as { boards: Boards[] };
+
   const [color, setColor] = React.useState("#E1E7EF");
 
   return (
     <ul className="mt-8 flex flex-wrap gap-8">
       <li
+        key="form"
         style={{ backgroundColor: color }}
         className="flex h-36 w-64 flex-col rounded-md bg-color1 p-4"
       >
-        <form className="flex flex-col gap-4">
+        <Form
+          className="flex flex-col gap-4"
+          method="POST"
+          action="/"
+          onChange={handleChange}
+        >
           <div className="flex flex-col gap-2">
-            <label className="h-fit text-sm leading-none" htmlFor="">
+            <label className="h-fit text-sm leading-none" htmlFor="title">
               Board Title
             </label>
-            <Input className="flex h-10 " type="text" />
+            <Input className="flex h-10 " type="text" name="title" id="title" />
           </div>
 
           <div className="relative flex items-center justify-between">
             <ColorPicker
               onChange={(event) => {
                 const target = event.target as HTMLInputElement;
-                console.log(target.name);
-                setColor(target.name);
+                setColor(target.value);
+                console.log(color);
+                handleChange(event);
               }}
             />
-
-            <Button buttonText="Create" />
+            <input type="hidden" value={color} name="color" />
+            <Button buttonText={isSubmitting ? "Creating..." : "Create"} />
+            {error && <p className="text-center text-red-500">{error}</p>}
           </div>
-        </form>
+        </Form>
       </li>
-
-      {arrList.map((element) => {
+      {console.log(boards)}
+      {boards.map((element, index) => {
         return (
-          <li
+          <Link
+            to={`/boards/${element.id}`}
+            key={index}
             style={{ backgroundColor: element.color }}
             className={`flex h-36 w-64 items-center justify-center rounded-md p-4 bg-${element.color}`}
           >
             {element.title}
-          </li>
+          </Link>
         );
       })}
     </ul>

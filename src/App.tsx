@@ -4,6 +4,7 @@ import "./App.css";
 import { authProvider } from "./auth";
 import { Outlet, redirect } from "react-router-dom";
 import Header from "./components/Header";
+import { createBoard, getBoards } from "./services/boards";
 
 export async function loader({ request }: { request: Request }) {
   if (!authProvider.isAuthenticated) {
@@ -11,11 +12,22 @@ export async function loader({ request }: { request: Request }) {
     params.set("from", new URL(request.url).pathname);
     return redirect("/login?" + params.toString());
   }
-  return null;
-}
-// Obtener los boards
 
-// Falta un action para crear una nota
+  const [boards] = await Promise.all([getBoards()]);
+  return { boards };
+}
+
+export async function action({ request }: { request: Request }) {
+  const formData = await request.formData();
+  const boardData = Object.fromEntries(formData.entries());
+  console.log(boardData);
+  try {
+    await createBoard(boardData);
+    return redirect("/");
+  } catch (error) {
+    return { error: error.message };
+  }
+}
 
 function App() {
   return (

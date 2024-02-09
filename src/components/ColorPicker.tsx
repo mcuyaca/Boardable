@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Button } from "./Button";
 
 interface Props {
   onChange: (value: React.MouseEvent<HTMLInputElement>) => void;
@@ -26,11 +27,12 @@ function ColorPicker({ onChange = () => {} }: Props) {
     "#DED7FE",
   ];
 
-  const inputSytle = "h-6 w-6 rounded-full border border-black";
+  const inputSytle =
+    "h-6 w-6 rounded-full border border-black cursor-pointer text-transparent";
 
   return (
     <div className="flex gap-2">
-      <label htmlFor="">Color</label>
+      <p>Color</p>
       <div
         className="h-6 w-6 rounded-full border border-black bg-transparent"
         onClick={handleClick}
@@ -41,9 +43,10 @@ function ColorPicker({ onChange = () => {} }: Props) {
             <input
               key={color}
               type="button"
+              className={inputSytle}
               style={{ backgroundColor: color }}
-              className={`${inputSytle}`}
-              name={color}
+              name="color"
+              value={color}
               onClick={handleClickColor}
             />
           ))}

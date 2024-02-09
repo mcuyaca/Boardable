@@ -3,9 +3,9 @@ import Login, { action as loginAction } from "./routes/Login";
 import BoardCanvas from "./routes/BoardCanvas";
 import Signup, { action as signupAction } from "./routes/Signup";
 import Account from "./routes/Account";
-import App, { loader as rootLoader } from "./App";
+import App, { loader as rootLoader, action as rootAction } from "./App";
 import Boards from "./components/Boards";
-import { action as logoutAction } from "./routes/logout";
+import { action as logoutAction } from "./routes/Logout";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +13,7 @@ export const router = createBrowserRouter([
     path: "/",
     element: <App />,
     loader: rootLoader,
+    action: rootAction,
     children: [
       {
         index: true,
@@ -23,8 +24,9 @@ export const router = createBrowserRouter([
         element: <Account />,
       },
       {
-        path: "boards",
+        path: "boards/:boardid",
         element: <BoardCanvas />,
+        loader: BoardCanvas.loader,
       },
     ],
   },

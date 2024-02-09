@@ -3,6 +3,26 @@ import { Input } from "../components/Input";
 import BoardMenu from "../components/BoardMenu";
 import TaskList from "../components/TaskList";
 import { Button } from "../components/Button";
+import { authProvider } from "../auth";
+import { redirect } from "react-router-dom";
+import { getLists } from "../services/lists";
+import { getTasks } from "../services/tasks";
+
+async function loader({ request }) {
+  if (!authProvider.isAuthenticated) {
+    const params = new URLSearchParams();
+    params.set("from", new URL(request.url).pathname);
+    return redirect("/login?" + params.toString());
+  }
+
+  const path = window.location.pathname;
+  const boardId = path.split("/")[2];
+  console.log(boardId);
+  const [lists, tasks] = await Promise.all([getLists(), getTasks()]);
+  console.log({ lists, tasks });
+
+  return { lists, tasks };
+}
 
 const example = [
   {
@@ -30,8 +50,8 @@ function BoardCanvas() {
       </div>
 
       <section className="flex flex-wrap gap-8 pt-4">
-        {example.map((element) => {
-          return <TaskList data={element} />;
+        {example.map((element, index) => {
+          return <TaskList key={index} data={element} />;
         })}
 
         <div className="flex h-fit w-[280px] flex-col gap-2 rounded-md bg-muted p-2 ">
@@ -51,3 +71,5 @@ function BoardCanvas() {
 }
 
 export default BoardCanvas;
+
+BoardCanvas.loader = loader;
