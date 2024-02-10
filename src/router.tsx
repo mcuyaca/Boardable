@@ -6,6 +6,7 @@ import Account from "./routes/Account";
 import App, { loader as rootLoader, action as rootAction } from "./App";
 import Boards from "./components/Boards";
 import { action as logoutAction } from "./routes/Logout";
+import { action as destroyAction } from "./routes/Destroy";
 
 export const router = createBrowserRouter([
   {
@@ -20,13 +21,22 @@ export const router = createBrowserRouter([
         element: <Boards />,
       },
       {
+        id: "account",
         path: "account",
         element: <Account />,
+        loader: Account.loader,
+        action: Account.action,
       },
       {
+        id: "canvas",
         path: "boards/:boardid",
         element: <BoardCanvas />,
         loader: BoardCanvas.loader,
+        action: BoardCanvas.action,
+      },
+      {
+        path: "boards/:boardid/destroy",
+        action: destroyAction,
       },
     ],
   },

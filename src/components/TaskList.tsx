@@ -3,36 +3,36 @@ import * as React from "react";
 import BoardMenu from "./BoardMenu";
 import NewCard from "./NewCard";
 
-const example = {
-  title: "Doing",
-  tasks: ["Otra tarjeta", "Mi Primera tarjeta"],
-};
+async function action({ request }) {}
 
 interface Props {
-  data: { title: string; tasks: string[] };
+  data: { [k: string]: string | number };
+  tasks: { [k: string]: string | number }[];
 }
 
-function TaskList({ data = example }: Props) {
+function TaskList({ data, tasks }: Props) {
   return (
     <div className="flex h-fit w-[280px] flex-col gap-2 rounded-md bg-muted p-2">
       <div className=" flex items-center justify-between px-4">
-        <h3 className="text-lg font-semibold">{data.title}</h3>
+        <h3 className="text-lg font-semibold">{data.title} </h3>
         <BoardMenu />
       </div>
 
-      {data.tasks.map((element, index) => {
-        return (
-          <div
-            key={index}
-            className=" flex items-center justify-between rounded-md bg-background p-2 shadow-menu"
-          >
-            <p className="">{element} </p>
-            <BoardMenu />
-          </div>
-        );
+      {tasks.map((task, index) => {
+        if (task.listid === data.id)
+          return (
+            <div
+              key={index}
+              id={task.id.toString()}
+              className=" flex items-center justify-between rounded-md bg-background p-2 shadow-menu"
+            >
+              <p className="">{task.content} </p>
+              <BoardMenu taskId={task.id.toString()} />
+            </div>
+          );
       })}
 
-      <NewCard />
+      <NewCard listId={data.id} />
     </div>
   );
 }

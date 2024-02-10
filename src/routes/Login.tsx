@@ -55,6 +55,7 @@ function Login() {
         <LabeledInput name="username" label="Username" />
         <LabeledInput name="password" label="Password" />
         <Button
+          type="submit"
           className="h-11"
           buttonText={isSubmitting ? "Entering ..." : "Login"}
         ></Button>

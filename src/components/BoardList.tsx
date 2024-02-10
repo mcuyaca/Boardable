@@ -34,7 +34,7 @@ function BoardList() {
     const { name, value } = event.target;
 
     setFormData({ ...formData, [name]: value });
-    await console.log(formData);
+    console.log(formData);
   }
 
   React.useEffect(() => {
@@ -83,7 +83,6 @@ function BoardList() {
           </div>
         </Form>
       </li>
-      {console.log(boards)}
       {boards.map((element, index) => {
         return (
           <Link

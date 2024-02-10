@@ -1,7 +1,11 @@
 import * as React from "react";
 import threeDot from "../assets/images/tree-dot.svg";
+import { Form } from "react-router-dom";
 
-function BoardMenu() {
+interface Props {
+  taskId?: string;
+}
+function BoardMenu({ taskId }: Props) {
   const [showMenu, setShowMenu] = React.useState(false);
 
   function handleClick() {
@@ -12,14 +16,27 @@ function BoardMenu() {
     <div className="relative flex items-center justify-center">
       <img className="h-2 w-4" src={threeDot} alt="" onClick={handleClick} />
       {showMenu && (
-        <div className="absolute top-4 z-10 flex w-24 flex-col gap-1 rounded-md bg-background  shadow-menu">
+        <Form
+          method="post"
+          action="destroy"
+          onSubmit={(event) => {
+            if (!confirm("Estas seguro de eliminar esta tarea")) {
+              event?.preventDefault();
+            }
+          }}
+          className="absolute top-4 z-10 flex w-24 flex-col gap-1 rounded-md bg-background  shadow-menu"
+        >
           <button className="flex p-2 hover:rounded-t-md hover:bg-outline-active">
             Edit
           </button>
-          <button className="flex p-2 hover:rounded-b-md hover:bg-outline-active">
+          <input type="hidden" name="taskId" id="taskId" value={taskId} />
+          <button
+            type="submit"
+            className="flex p-2 hover:rounded-b-md hover:bg-outline-active"
+          >
             Delete
           </button>
-        </div>
+        </Form>
       )}
     </div>
   );

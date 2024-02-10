@@ -4,12 +4,14 @@ import { twMerge } from "tailwind-merge";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   buttonText: string;
   variant?: "default" | "secondary" | "outline" | "danger";
+  type?: "submit" | "button";
 }
 
 export function Button({
   className,
   buttonText,
   variant,
+  type = "button",
   ...props
 }: ButtonProps) {
   const defaultStyles =
@@ -29,7 +31,7 @@ export function Button({
 
   const mergeStyles = twMerge(defaultStyles, variantStyles, className);
   return (
-    <button className={mergeStyles} {...props}>
+    <button type={type} className={mergeStyles} {...props}>
       {buttonText}
     </button>
   );

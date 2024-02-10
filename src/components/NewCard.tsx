@@ -1,8 +1,9 @@
 import React from "react";
 import { Input } from "./Input";
 import { Button } from "./Button";
+import { Form } from "react-router-dom";
 
-function NewCard() {
+function NewCard({ listId }) {
   const [showMenu, setShowMenu] = React.useState(false);
 
   function handleClick() {
@@ -13,20 +14,21 @@ function NewCard() {
     <>
       {showMenu ? (
         <div className="flex w-full items-center justify-between rounded-md bg-background p-2 shadow-menu">
-          <div className="flex w-full flex-col gap-2">
-            <label className="text-sm" htmlFor="">
+          <Form
+            method="POST"
+            className="flex w-full flex-col gap-2"
+            onSubmit={() => handleClick()}
+          >
+            <label className="text-sm" htmlFor="content">
               Card Title
             </label>
-            <Input type="text" />
+            <Input type="text" name="content" id="content" />
+            <input type="hidden" name="listId" id="listId" value={listId} />
             <div className="flex gap-2">
-              <Button buttonText="Add card" />
-              <Button
-                variant="secondary"
-                buttonText="Cancel"
-                onClick={handleClick}
-              />
+              <Button type="submit" buttonText="Add card" />
+              <Button variant="secondary" buttonText="Cancel" />
             </div>
-          </div>
+          </Form>
         </div>
       ) : (
         <p

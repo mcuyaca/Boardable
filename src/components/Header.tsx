@@ -19,7 +19,11 @@ function Header() {
           ></Button>
         </Link>
         <Form method="POST" action="/logout">
-          <Button variant="secondary" className="" buttonText="Logout"></Button>
+          <Button
+            type="submit"
+            variant="secondary"
+            buttonText="Logout"
+          ></Button>
         </Form>
       </div>
     </div>
