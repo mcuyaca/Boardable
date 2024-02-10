@@ -36,7 +36,7 @@ function Signup() {
       <Form className="flex w-80 flex-col gap-4 " method="POST">
         <LabeledInput name="username" label="Username" />
         <LabeledInput name="password" label="Password" />
-        <Button className="h-11" buttonText="Signup"></Button>
+        <Button type="submit" className="h-11" buttonText="Signup"></Button>
         {actionData?.error && (
           <p className="text-center text-red-500">{actionData.error}</p>
         )}

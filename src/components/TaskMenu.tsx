@@ -20,7 +20,7 @@ function BoardMenu({ taskId }: Props) {
           method="post"
           action="destroy"
           onSubmit={(event) => {
-            if (!confirm("Estas seguro de eliminar este Board")) {
+            if (!confirm("Estas seguro de eliminar esta tarea")) {
               event?.preventDefault();
             }
           }}
@@ -29,7 +29,7 @@ function BoardMenu({ taskId }: Props) {
           <button className="flex p-2 hover:rounded-t-md hover:bg-outline-active">
             Edit
           </button>
-          <input type="hidden" name="boardId" id="boardId" value={taskId} />
+          <input type="hidden" name="taskId" id="taskId" value={taskId} />
           <button
             type="submit"
             className="flex p-2 hover:rounded-b-md hover:bg-outline-active"

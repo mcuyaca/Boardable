@@ -14,10 +14,8 @@ function Boards() {
             name="sort"
             id="sort"
           >
-            <option className="bg-background " value="date">
-              Created date
-            </option>
-            <option value="a">Created aaaa</option>
+            <option value="date">Created date</option>
+            <option value="Alphabetical"> Alphabetical</option>
           </select>
         </div>
       </PageName>

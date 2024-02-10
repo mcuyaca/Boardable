@@ -4,6 +4,7 @@ import { authProvider } from "../auth";
 import { redirect, useRouteLoaderData } from "react-router-dom";
 import { getLists } from "../services/lists";
 import { createTask, getTasks } from "../services/tasks";
+import { getBoards } from "../services/boards";
 
 async function loader({ request, params }: { request: Request; params: any }) {
   if (!authProvider.isAuthenticated) {
@@ -12,10 +13,17 @@ async function loader({ request, params }: { request: Request; params: any }) {
     return redirect("/login?" + searchParams.toString());
   }
 
-  const [lists, tasks] = await Promise.all([getLists(), getTasks()]);
-  const boardId = params.boardid;
+  const [lists, tasks, boards] = await Promise.all([
+    getLists(),
+    getTasks(),
+    getBoards(),
+  ]);
 
-  return { lists, tasks, boardId };
+  const boardId = params.boardid;
+  const board = boards.filter((board: any) => board.id == boardId)[0];
+
+  console.log(boards);
+  return { lists, tasks, boardId, board };
 }
 
 interface Task {
@@ -40,6 +48,7 @@ interface BoardData {
   boardId: string;
   lists: { [k: string]: string | number }[];
   tasks: { [k: string]: string | number }[];
+  board: { [k: string]: string | number }[];
 }
 
 function BoardCanvas() {
@@ -47,12 +56,15 @@ function BoardCanvas() {
   const filterList = boardData.lists.filter(
     (item) => item.boardid == boardData.boardId,
   );
-
+  const board: any = boardData.board;
   console.log(boardData);
   return (
-    <section className="flex max-h-full flex-grow flex-col gap-4 bg-color2 px-20 pt-4">
+    <section
+      style={{ backgroundColor: board.color }}
+      className="flex max-h-full flex-grow flex-col gap-4 bg-color2 px-20 pt-4"
+    >
       <div className="flex items-center gap-4 ">
-        <h2 className="flex text-2xl font-bold">My Board title </h2>
+        <h2 className="flex text-2xl font-bold">{board.title}</h2>
 
         <BoardMenu />
       </div>

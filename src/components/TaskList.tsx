@@ -1,4 +1,5 @@
 import BoardMenu from "./BoardMenu";
+import TaskMenu from "./TaskMenu";
 import NewCard from "./NewCard";
 
 interface Props {
@@ -23,7 +24,7 @@ function TaskList({ data, tasks }: Props) {
               className=" flex items-center justify-between rounded-md bg-background p-2 shadow-menu"
             >
               <p className="">{task.content} </p>
-              <BoardMenu taskId={task.id.toString()} />
+              <TaskMenu taskId={task.id.toString()} />
             </div>
           );
       })}
