@@ -78,7 +78,10 @@ function BoardList() {
               }}
             />
             <input type="hidden" value={color} name="color" />
-            <Button buttonText={isSubmitting ? "Creating..." : "Create"} />
+            <Button
+              type="submit"
+              buttonText={isSubmitting ? "Creating..." : "Create"}
+            />
             {error && <p className="text-center text-red-500">{error}</p>}
           </div>
         </Form>

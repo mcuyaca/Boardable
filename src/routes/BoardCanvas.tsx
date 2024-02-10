@@ -1,13 +1,9 @@
-import * as React from "react";
-import { Input } from "../components/Input";
 import BoardMenu from "../components/BoardMenu";
 import TaskList from "../components/TaskList";
-import { Button } from "../components/Button";
 import { authProvider } from "../auth";
 import { redirect, useRouteLoaderData } from "react-router-dom";
 import { getLists } from "../services/lists";
 import { createTask, getTasks } from "../services/tasks";
-import { act } from "react-dom/test-utils";
 
 async function loader({ request, params }) {
   if (!authProvider.isAuthenticated) {
@@ -63,17 +59,17 @@ function BoardCanvas() {
           );
         })}
 
-        <div className="flex h-fit w-[280px] flex-col gap-2 rounded-md bg-muted p-2 ">
+        {/* <div className="flex h-fit w-[280px] flex-col gap-2 rounded-md bg-muted p-2 ">
           <div className="flex w-full flex-col gap-2">
             <label className="text-sm" htmlFor="">
-              Card Title
+              Card Title 
             </label>
             <Input type="text" />
             <div className="flex gap-2">
               <Button buttonText="Create new List" />
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
     </section>
   );

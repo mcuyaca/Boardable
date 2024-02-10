@@ -1,6 +1,4 @@
 import * as React from "react";
-import { Button } from "./Button";
-
 interface Props {
   onChange: (value: React.MouseEvent<HTMLInputElement>) => void;
 }

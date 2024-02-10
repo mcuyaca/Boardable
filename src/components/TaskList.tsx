@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import BoardMenu from "./BoardMenu";
 import NewCard from "./NewCard";
 

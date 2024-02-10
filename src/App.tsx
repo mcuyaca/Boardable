@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import "./App.css";
 import { authProvider } from "./auth";
 import { Outlet, redirect } from "react-router-dom";
