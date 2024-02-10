@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Button } from "./Button";
 import logoSvg from "../assets/images/Logo.svg";
 import { Form, Link } from "react-router-dom";

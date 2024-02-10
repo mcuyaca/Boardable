@@ -30,9 +30,9 @@ function BoardList() {
   const error = useOutletContext();
   const isSubmitting = Boolean(navigation.formMethod);
 
-  async function handleChange(event) {
-    const { name, value } = event.target;
-
+  async function handleChange(event: React.ChangeEvent<any>) {
+    const target = event.target as HTMLInputElement;
+    const { name, value } = target;
     setFormData({ ...formData, [name]: value });
     console.log(formData);
   }
@@ -59,7 +59,7 @@ function BoardList() {
           className="flex flex-col gap-4"
           method="POST"
           action="/"
-          onChange={handleChange}
+          onChange={(event) => handleChange(event)}
         >
           <div className="flex flex-col gap-2">
             <label className="h-fit text-sm leading-none" htmlFor="title">
@@ -73,7 +73,6 @@ function BoardList() {
               onChange={(event) => {
                 const target = event.target as HTMLInputElement;
                 setColor(target.value);
-                console.log(color);
                 handleChange(event);
               }}
             />
@@ -82,7 +81,9 @@ function BoardList() {
               type="submit"
               buttonText={isSubmitting ? "Creating..." : "Create"}
             />
-            {error && <p className="text-center text-red-500">{error}</p>}
+            {typeof error === "string" && (
+              <p className="text-center text-red-500">{error}</p>
+            )}
           </div>
         </Form>
       </li>

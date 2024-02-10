@@ -5,7 +5,7 @@ import { authProvider } from "../auth";
 import { Form, redirect, useRouteLoaderData } from "react-router-dom";
 import { getUserData, updateUser } from "../services/user";
 
-async function loader({ request }) {
+async function loader({ request }: { request: Request }) {
   if (!authProvider.isAuthenticated) {
     const params = new URLSearchParams();
     params.set("from", new URL(request.url).pathname);
@@ -16,7 +16,7 @@ async function loader({ request }) {
   return { userData };
 }
 
-async function action({ request }) {
+async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const name = formData.get("name")?.toString();
   const email = formData.get("email")?.toString();
@@ -29,7 +29,9 @@ async function action({ request }) {
     await updateUser(userData);
     return redirect("/account");
   } catch (error) {
-    return { error: error.message };
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
   }
 }
 

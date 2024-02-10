@@ -3,7 +3,11 @@ import { Input } from "./Input";
 import { Button } from "./Button";
 import { Form } from "react-router-dom";
 
-function NewCard({ listId }) {
+interface Props {
+  listId: number | string;
+}
+
+function NewCard({ listId }: Props) {
   const [showMenu, setShowMenu] = React.useState(false);
 
   function handleClick() {

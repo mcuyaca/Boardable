@@ -29,7 +29,7 @@ export async function getUserData() {
   return Promise.reject(new Error(body.error));
 }
 
-export async function updateUser(userData) {
+export async function updateUser(userData: any) {
   const url = `${URL_BASE}/account`;
   const token = authProvider.token;
 

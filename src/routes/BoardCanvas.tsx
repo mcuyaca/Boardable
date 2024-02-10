@@ -5,11 +5,11 @@ import { redirect, useRouteLoaderData } from "react-router-dom";
 import { getLists } from "../services/lists";
 import { createTask, getTasks } from "../services/tasks";
 
-async function loader({ request, params }) {
+async function loader({ request, params }: { request: Request; params: any }) {
   if (!authProvider.isAuthenticated) {
-    const params = new URLSearchParams();
-    params.set("from", new URL(request.url).pathname);
-    return redirect("/login?" + params.toString());
+    const searchParams = new URLSearchParams();
+    searchParams.set("from", new URL(request.url).pathname);
+    return redirect("/login?" + searchParams.toString());
   }
 
   const [lists, tasks] = await Promise.all([getLists(), getTasks()]);
@@ -18,16 +18,21 @@ async function loader({ request, params }) {
   return { lists, tasks, boardId };
 }
 
-async function action({ request, params }) {
-  const formData = await request.formData();
-  const taskData = Object.fromEntries(formData.entries());
+interface Task {
+  content: string;
+  listId: number;
+}
 
-  console.log(taskData);
+async function action({ request }: { request: Request }) {
+  const formData = await request.formData();
+  const taskData = Object.fromEntries(formData.entries()) as unknown as Task;
   try {
     await createTask(taskData);
     return {};
   } catch (error) {
-    return { error: error.message };
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
   }
 }
 

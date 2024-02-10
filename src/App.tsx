@@ -15,15 +15,22 @@ export async function loader({ request }: { request: Request }) {
   return { boards };
 }
 
+type Board = {
+  title: string;
+  color?: string;
+};
+
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
-  const boardData = Object.fromEntries(formData.entries());
-  console.log(boardData);
+  const boardData = Object.fromEntries(formData.entries()) as Board;
+
   try {
     await createBoard(boardData);
     return redirect("/");
   } catch (error) {
-    return { error: error.message };
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
   }
 }
 

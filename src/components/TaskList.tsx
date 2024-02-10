@@ -1,8 +1,6 @@
 import BoardMenu from "./BoardMenu";
 import NewCard from "./NewCard";
 
-async function action({ request }) {}
-
 interface Props {
   data: { [k: string]: string | number };
   tasks: { [k: string]: string | number }[];
