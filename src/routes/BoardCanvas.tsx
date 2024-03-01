@@ -3,7 +3,7 @@ import TaskList from "../components/TaskList";
 import { authProvider } from "../auth";
 import { redirect, useRouteLoaderData } from "react-router-dom";
 import { getLists } from "../services/lists";
-import { createTask, getTasks } from "../services/tasks";
+import { createTask, deleteTask, editTask, getTasks } from "../services/tasks";
 import { getBoards } from "../services/boards";
 
 async function loader({ request, params }: { request: Request; params: any }) {
@@ -34,13 +34,65 @@ interface Task {
 async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const taskData = Object.fromEntries(formData.entries()) as unknown as Task;
-  try {
-    await createTask(taskData);
-    return {};
-  } catch (error) {
-    if (error instanceof Error) {
-      return { error: error.message };
+
+  const intent = formData.get("intent");
+
+  if (intent === "title") {
+    if (request.method === "DELETE") {
+      try {
+        return {};
+      } catch (error) {
+        if (error instanceof Error) {
+          return { error: error.message };
+        }
+      }
     }
+
+    return {};
+  }
+
+  if (intent === "list") {
+    return {};
+  }
+
+  if (intent === "task") {
+    if (request.method === "POST") {
+      try {
+        await createTask(taskData);
+        return {};
+      } catch (error) {
+        if (error instanceof Error) {
+          return { error: error.message };
+        }
+      }
+    }
+
+    if (request.method === "PATCH") {
+      const newTask = prompt("Escriba el nuevo mensaje");
+      const newBody = {
+        content: newTask,
+        id: taskData.taskId,
+      };
+      try {
+        editTask(newBody);
+      } catch (error) {
+        if (error instanceof Error) {
+          return { error: error.message };
+        }
+      }
+      return {};
+    }
+
+    if (request.method === "DELETE") {
+      try {
+        await deleteTask(taskData);
+      } catch (error) {
+        if (error instanceof Error) {
+          return { error: error.message };
+        }
+      }
+    }
+    return {};
   }
 }
 

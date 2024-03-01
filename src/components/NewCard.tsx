@@ -29,7 +29,12 @@ function NewCard({ listId }: Props) {
             <Input type="text" name="content" id="content" />
             <input type="hidden" name="listId" id="listId" value={listId} />
             <div className="flex gap-2">
-              <Button type="submit" buttonText="Add card" />
+              <Button
+                name="intent"
+                value="task"
+                type="submit"
+                buttonText="Add card"
+              />
               <Button variant="secondary" buttonText="Cancel" />
             </div>
           </Form>

@@ -62,6 +62,38 @@ export async function createTask(boardData: Task) {
   return Promise.reject(new Error(body.error));
 }
 
+export async function editTask(boardData: any) {
+  const url = `${URL_BASE}/task`;
+  const token = authProvider.token;
+
+  const options = {
+    method: "PATCH",
+    body: JSON.stringify(boardData),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+  };
+
+  const response = await fetch(url, options);
+
+  if (response.ok) {
+    console.log(response);
+    const body = await response.json();
+    console.log(body.data);
+    return body.data;
+  }
+
+  if (response.status === 401) {
+    authProvider.logout();
+    throw redirect("/login");
+  }
+
+  const body = await response.json();
+
+  return Promise.reject(new Error(body.error));
+}
+
 export async function deleteTask(boardData: Task) {
   const url = `${URL_BASE}/task`;
   const token = authProvider.token;

@@ -1,3 +1,4 @@
+import * as React from "react";
 import BoardMenu from "./BoardMenu";
 import TaskMenu from "./TaskMenu";
 import NewCard from "./NewCard";
@@ -8,6 +9,10 @@ interface Props {
 }
 
 function TaskList({ data, tasks }: Props) {
+  const [activeTask, setActiveTask] = React.useState<string | null>(null);
+  function handleMenuToggle(menuId: string) {
+    setActiveTask((prevId) => (prevId === menuId ? null : menuId));
+  }
   return (
     <div className="flex h-fit w-[280px] flex-col gap-2 rounded-md bg-muted p-2">
       <div className=" flex items-center justify-between px-4">
@@ -24,7 +29,11 @@ function TaskList({ data, tasks }: Props) {
               className=" flex items-center justify-between rounded-md bg-background p-2 shadow-menu"
             >
               <p className="">{task.content} </p>
-              <TaskMenu taskId={task.id.toString()} />
+              <TaskMenu
+                taskId={task.id.toString()}
+                isActive={activeTask === task.id.toString()}
+                onToggle={() => handleMenuToggle(task.id.toString())}
+              />
             </div>
           );
       })}
