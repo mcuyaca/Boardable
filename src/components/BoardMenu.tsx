@@ -2,10 +2,7 @@ import * as React from "react";
 import threeDot from "../assets/images/tree-dot.svg";
 import { Form } from "react-router-dom";
 
-interface Props {
-  taskId?: string;
-}
-function BoardMenu({ taskId }: Props) {
+function BoardMenu() {
   const [showMenu, setShowMenu] = React.useState(false);
 
   function handleClick() {
@@ -16,27 +13,34 @@ function BoardMenu({ taskId }: Props) {
     <div className="relative flex items-center justify-center">
       <img className="h-2 w-4" src={threeDot} alt="" onClick={handleClick} />
       {showMenu && (
-        <Form
-          method="post"
-          action="destroy"
-          onSubmit={(event) => {
-            if (!confirm("Estas seguro de eliminar este Board")) {
-              event?.preventDefault();
-            }
-          }}
-          className="absolute top-4 z-10 flex w-24 flex-col gap-1 rounded-md bg-background  shadow-menu"
-        >
-          <button className="flex p-2 hover:rounded-t-md hover:bg-outline-active">
-            Edit
-          </button>
-          <input type="hidden" name="boardId" id="boardId" value={taskId} />
-          <button
-            type="submit"
-            className="flex p-2 hover:rounded-b-md hover:bg-outline-active"
+        <div className="absolute top-4 z-10 flex w-24 flex-col gap-1 rounded-md bg-background  shadow-menu">
+          <Form method="PATCH" onSubmit={handleClick}>
+            <button
+              type="submit"
+              name="intent"
+              value="board"
+              className="flex w-full p-2 hover:rounded-t-md hover:bg-outline-active"
+            >
+              Edit
+            </button>
+          </Form>
+
+          <Form
+            method="DELETE"
+            onSubmit={(event) => {
+              confirm("Estas seguro de eliminar este Board");
+            }}
           >
-            Delete
-          </button>
-        </Form>
+            <button
+              type="submit"
+              name="intent"
+              value="board"
+              className="flex w-full p-2 hover:rounded-b-md hover:bg-outline-active"
+            >
+              Delete
+            </button>
+          </Form>
+        </div>
       )}
     </div>
   );

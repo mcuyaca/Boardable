@@ -33,8 +33,9 @@ interface Task {
   listId: number;
 }
 
-export async function createTask(boardData: Task) {
-  const url = `${URL_BASE}/task`;
+export async function createTask(boardData: Task, boardId: string) {
+  const url = `${URL_BASE}/task/${boardId}`;
+  console.log(url);
   const token = authProvider.token;
 
   const options = {

@@ -4,7 +4,7 @@ import { authProvider } from "../auth";
 import { redirect, useRouteLoaderData } from "react-router-dom";
 import { getLists } from "../services/lists";
 import { createTask, deleteTask, editTask, getTasks } from "../services/tasks";
-import { getBoards } from "../services/boards";
+import { deleteBoard, editBoard, getBoards } from "../services/boards";
 
 async function loader({ request, params }: { request: Request; params: any }) {
   if (!authProvider.isAuthenticated) {
@@ -31,14 +31,40 @@ interface Task {
   listId: number;
 }
 
-async function action({ request }: { request: Request }) {
+async function action({ request, params }: { request: Request; params: any }) {
   const formData = await request.formData();
   const taskData = Object.fromEntries(formData.entries()) as unknown as Task;
 
   const intent = formData.get("intent");
-
-  if (intent === "title") {
+  const boardId = params.boardid;
+  if (intent === "board") {
     if (request.method === "DELETE") {
+      try {
+        await deleteBoard(boardId);
+        return redirect("/");
+      } catch (error) {
+        if (error instanceof Error) {
+          return { error: error.message };
+        }
+      }
+    }
+    if (request.method === "PATCH") {
+      try {
+        const newTitle = prompt();
+        const data = { title: newTitle! };
+        await editBoard(data, boardId);
+        return {};
+      } catch (error) {
+        if (error instanceof Error) {
+          return { error: error.message };
+        }
+      }
+    }
+    return {};
+  }
+
+  if (intent === "list") {
+    if (request.method === "POST") {
       try {
         return {};
       } catch (error) {
@@ -47,18 +73,13 @@ async function action({ request }: { request: Request }) {
         }
       }
     }
-
-    return {};
-  }
-
-  if (intent === "list") {
     return {};
   }
 
   if (intent === "task") {
     if (request.method === "POST") {
       try {
-        await createTask(taskData);
+        await createTask(taskData, boardId);
         return {};
       } catch (error) {
         if (error instanceof Error) {
@@ -117,7 +138,6 @@ function BoardCanvas() {
     >
       <div className="flex items-center gap-4 ">
         <h2 className="flex text-2xl font-bold">{board.title}</h2>
-
         <BoardMenu />
       </div>
 
