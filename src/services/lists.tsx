@@ -2,6 +2,11 @@ import { redirect } from "react-router-dom";
 import { authProvider } from "../auth";
 import { URL_BASE } from "../constants";
 
+type Board = {
+  title: string;
+  color?: string;
+};
+
 export async function getLists() {
   const token = authProvider.token;
 
