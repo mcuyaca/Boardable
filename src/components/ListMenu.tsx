@@ -2,7 +2,11 @@ import * as React from "react";
 import threeDot from "../assets/images/tree-dot.svg";
 import { Form } from "react-router-dom";
 
-function BoardMenu() {
+interface Props {
+  listId: string;
+}
+
+function ListMenu({ listId }: Props) {
   const [showMenu, setShowMenu] = React.useState(false);
 
   function handleClick() {
@@ -18,7 +22,7 @@ function BoardMenu() {
             <button
               type="submit"
               name="intent"
-              value="board"
+              value="list"
               className="flex w-full p-2 hover:rounded-t-md hover:bg-outline-active"
             >
               Edit
@@ -28,13 +32,14 @@ function BoardMenu() {
           <Form
             method="DELETE"
             onSubmit={() => {
-              confirm("Estas seguro de eliminar este Board");
+              confirm("Estas seguro de eliminar esta List");
             }}
           >
+            <input type="hidden" name="listId" id="listId" value={listId} />
             <button
               type="submit"
               name="intent"
-              value="board"
+              value="list"
               className="flex w-full p-2 hover:rounded-b-md hover:bg-outline-active"
             >
               Delete
@@ -46,4 +51,4 @@ function BoardMenu() {
   );
 }
 
-export default BoardMenu;
+export default ListMenu;

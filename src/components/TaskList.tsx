@@ -1,7 +1,7 @@
 import * as React from "react";
-import BoardMenu from "./BoardMenu";
-import TaskMenu from "./TaskMenu";
 import NewCard from "./NewCard";
+import TaskMenu from "./TaskMenu";
+import ListMenu from "./ListMenu";
 
 interface Props {
   data: { [k: string]: string | number };
@@ -16,8 +16,8 @@ function TaskList({ data, tasks }: Props) {
   return (
     <div className="flex h-fit w-[280px] flex-col gap-2 rounded-md bg-muted p-2">
       <div className=" flex items-center justify-between px-4">
-        <h3 className="text-lg font-semibold">{data.title} </h3>
-        <BoardMenu />
+        <h3 className="text-lg font-semibold">{data.title}</h3>
+        <ListMenu listId={data.id.toString()} />
       </div>
 
       {tasks.map((task, index) => {

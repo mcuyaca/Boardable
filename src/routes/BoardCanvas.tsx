@@ -1,10 +1,12 @@
 import BoardMenu from "../components/BoardMenu";
 import TaskList from "../components/TaskList";
 import { authProvider } from "../auth";
-import { redirect, useRouteLoaderData } from "react-router-dom";
-import { getLists } from "../services/lists";
+import { Form, redirect, useRouteLoaderData } from "react-router-dom";
+import { createList, deleteList, getLists } from "../services/lists";
 import { createTask, deleteTask, editTask, getTasks } from "../services/tasks";
 import { deleteBoard, editBoard, getBoards } from "../services/boards";
+import { Input } from "../components/Input";
+import { Button } from "../components/Button";
 
 async function loader({ request, params }: { request: Request; params: any }) {
   if (!authProvider.isAuthenticated) {
@@ -29,6 +31,8 @@ async function loader({ request, params }: { request: Request; params: any }) {
 interface Task {
   content: string;
   listId: number;
+  taskId?: string;
+  title?: string;
 }
 
 async function action({ request, params }: { request: Request; params: any }) {
@@ -66,7 +70,21 @@ async function action({ request, params }: { request: Request; params: any }) {
   if (intent === "list") {
     if (request.method === "POST") {
       try {
+        const newList = {
+          boardId: Number(boardId),
+          title: taskData.title!,
+        };
+        await createList(newList);
         return {};
+      } catch (error) {
+        if (error instanceof Error) {
+          return { error: error.message };
+        }
+      }
+    }
+    if (request.method === "DELETE") {
+      try {
+        await deleteList(taskData.listId);
       } catch (error) {
         if (error instanceof Error) {
           return { error: error.message };
@@ -148,17 +166,23 @@ function BoardCanvas() {
           );
         })}
 
-        {/* <div className="flex h-fit w-[280px] flex-col gap-2 rounded-md bg-muted p-2 ">
-          <div className="flex w-full flex-col gap-2">
+        <div className="flex h-fit w-[280px] flex-col gap-2 rounded-md bg-muted p-2 ">
+          <Form method="POST" className="flex w-full flex-col gap-2">
             <label className="text-sm" htmlFor="">
-              Card Title 
+              Card Title
             </label>
-            <Input type="text" />
+
+            <Input name="title" type="text" />
             <div className="flex gap-2">
-              <Button buttonText="Create new List" />
+              <Button
+                type="submit"
+                name="intent"
+                value="list"
+                buttonText="Create new List"
+              />
             </div>
-          </div>
-        </div> */}
+          </Form>
+        </div>
       </section>
     </section>
   );
