@@ -90,13 +90,13 @@ export async function deleteList(listId: number) {
   return Promise.reject(new Error(body.error));
 }
 
-export async function editBoard(boardData: Board, boardId: string) {
-  const url = `${URL_BASE}/list/${boardId}`;
+export async function editList(boardData: any) {
+  const url = `${URL_BASE}/list/${boardData.id}`;
   const token = authProvider.token;
 
   const options = {
     method: "PATCH",
-    body: JSON.stringify(boardData),
+    body: JSON.stringify({ title: boardData.title }),
     headers: {
       "Content-Type": "application/json",
       Authorization: `bearer ${token}`,

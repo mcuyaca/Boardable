@@ -2,7 +2,7 @@ import BoardMenu from "../components/BoardMenu";
 import TaskList from "../components/TaskList";
 import { authProvider } from "../auth";
 import { Form, redirect, useRouteLoaderData } from "react-router-dom";
-import { createList, deleteList, getLists } from "../services/lists";
+import { createList, deleteList, editList, getLists } from "../services/lists";
 import { createTask, deleteTask, editTask, getTasks } from "../services/tasks";
 import { deleteBoard, editBoard, getBoards } from "../services/boards";
 import { Input } from "../components/Input";
@@ -82,6 +82,21 @@ async function action({ request, params }: { request: Request; params: any }) {
         }
       }
     }
+    if (request.method === "PATCH") {
+      const editTitleList = prompt("Escriba el nuevo nombre de la lista");
+      const editBody = {
+        title: editTitleList,
+        id: taskData.listId,
+        boardId: Number(boardId),
+      };
+      try {
+        editList(editBody);
+      } catch (error) {
+        if (error instanceof Error) {
+          return { error: error.message };
+        }
+      }
+    }
     if (request.method === "DELETE") {
       try {
         await deleteList(taskData.listId);
@@ -107,7 +122,7 @@ async function action({ request, params }: { request: Request; params: any }) {
     }
 
     if (request.method === "PATCH") {
-      const newTask = prompt("Escriba el nuevo mensaje");
+      const newTask = prompt("Escriba la descripción del task");
       const newBody = {
         content: newTask,
         id: taskData.taskId,
