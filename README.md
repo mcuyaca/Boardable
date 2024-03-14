@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Validify es una aplicación Full Stack que tiene como objetivo permitir a los usuarios autenticados y con el rol `admin` cargar archivos CSV para la creación de registros en una base de datos PostgreSQl.
+Boardable es una aplicación Full Stack diseñada para la gestión de tareas y proyectos de manera colaborativa, inspirada en la funcionalidad de Trello. Permite a los usuarios registrados crear tableros personalizados, agregar tarjetas con tareas y colaborar con otros miembros del equipo en tiempo real.
 
 ## Tabla de contenidos
 
